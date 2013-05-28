@@ -5,7 +5,7 @@ Statistics can be logged to a CSV data file and/or uploaded to PVoutput.org
 
 With a 5 minute interval cronjob, this program can upload statistics to PVoutput.org
 
-You only have to edit omnik.conf with your APIkey and Sysstem ID, to be provided by PVoutput.org
+You only have to edit omnik.conf with your APIkey and System ID, to be provided by PVoutput.org
 
 ## Installation and Setup
 
@@ -23,7 +23,15 @@ You only have to edit omnik.conf with your APIkey and Sysstem ID, to be provided
 The following cronjob command starts omnikstats every 5 minutes between 6 AM and 11 PM
 (no use to get statistics during night time)
 
-`*/5 6-23 * * * /<path to omnikstats/omnikstats
+`*/5 6-23 * * * /<path to omnikstats>/omnikstats
+
+UPDATE
+
+On my raspberry, the cronjob did not start in the correct directory. 
+Further, pvoutput only registers every 10 minutes
+so edit cronjob with: (enter sudo crontab -e)
+
+*/10 6-23 * * * cd <path to omnikstats> && /<path to omnikstats>/omnikstats
 
 ## REMARKS
 
