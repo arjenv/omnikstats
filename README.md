@@ -23,7 +23,7 @@ You only have to edit omnik.conf with your APIkey and System ID, to be provided 
 The following cronjob command starts omnikstats every 5 minutes between 6 AM and 11 PM
 (no use to get statistics during night time)
 
-`*/5 6-23 * * * /<path to omnikstats>/omnikstats
+*/5 6-22 * * * /&ltpath to omnikstats>/omnikstats
 
 UPDATE
 
@@ -31,12 +31,12 @@ On my raspberry, the cronjob did not start in the correct directory.
 Further, pvoutput only registers every 10 minutes
 so edit cronjob with: (enter sudo crontab -e)
 
-*/10 6-23 * * * cd <path to omnikstats> && /<path to omnikstats>/omnikstats
+*/10 6-22 * * * cd &ltpath to omnikstats> && /&ltpath to omnikstats>/omnikstats
 
 ## REMARKS
 
 * If no key and/or systemID is provided the program will still run (with an error from PVoutput)
 * This program might not work for all Omnik inverters. Contact me for possible solutions.
 * If you have more than 1 string in your solar system, it will get the statistics and -if desired- will
-	log this to CSV. However, only the first string will be uploaded to PVoutput.org
+	log this to CSV. However, only the first string will be uploaded to PVoutput.org (for now)
 
