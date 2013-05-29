@@ -31,7 +31,7 @@ On my raspberry, the cronjob did not start in the correct directory.
 Further, pvoutput only registers every 10 minutes
 so edit cronjob with: (enter sudo crontab -e)
 
-*/10 6-22 * * * cd \<path to omnikstats> && /&ltpath to omnikstats>/omnikstats
+*/10 6-22 * * * cd \<path to omnikstats> && /\<path to omnikstats>/omnikstats
 
 ## REMARKS
 
