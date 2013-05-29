@@ -23,7 +23,7 @@ You only have to edit omnik.conf with your APIkey and System ID, to be provided 
 The following cronjob command starts omnikstats every 5 minutes between 6 AM and 11 PM
 (no use to get statistics during night time)
 
-*/5 6-22 * * * /&ltpath to omnikstats>/omnikstats
+*/5 6-22 * * * /\<path to omnikstats>/omnikstats
 
 UPDATE
 
@@ -31,7 +31,7 @@ On my raspberry, the cronjob did not start in the correct directory.
 Further, pvoutput only registers every 10 minutes
 so edit cronjob with: (enter sudo crontab -e)
 
-*/10 6-22 * * * cd &ltpath to omnikstats> && /&ltpath to omnikstats>/omnikstats
+*/10 6-22 * * * cd \<path to omnikstats> && /&ltpath to omnikstats>/omnikstats
 
 ## REMARKS
 
