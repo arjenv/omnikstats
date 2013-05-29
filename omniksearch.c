@@ -23,6 +23,7 @@
 #include <unistd.h>
 #include <ifaddrs.h>
 #include <string.h>
+#include <errno.h>
 
 #include "omnikstats.h"
 
@@ -47,6 +48,7 @@ int omniksearch(char *Omnik_address, long *serialnr) {
 	struct sockaddr_in broadcast_address;
 	struct hostent *he;
 	int Omnikreply = 0;
+	int totaltimeout = 0;
      
 
 	if (getifaddrs(&ifaddr) == -1) {
@@ -117,13 +119,16 @@ int omniksearch(char *Omnik_address, long *serialnr) {
 	for(p = servinfo; p != NULL; p = p->ai_next) {
 		if ((sockfd = socket(p->ai_family, p->ai_socktype,
 				p->ai_protocol)) == -1) {
-			perror("listener: socket");
+			printf("omniksearch: socket %s %d\n", strerror(errno), errno);
 			continue;
 		}
 
+//		if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &allowbc, sizeof allowbc) == -1) {
+//			printf("Error setsockopt (SO_REUSEADDR) %s %d\n", strerror(errno), errno);
+//		}
+	
 		if (bind(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
-			close(sockfd);
-			perror("listener: bind");
+			printf("omniksearch: bind %s %d\n", strerror(errno), errno);
 			continue;
 		}
 
@@ -162,7 +167,7 @@ int omniksearch(char *Omnik_address, long *serialnr) {
 		printf("sent %d bytes to %s\n", bytes_sent, inet_ntoa(broadcast_address.sin_addr));
 
 
-	while(!Omnikreply) {
+	while((!Omnikreply) && (totaltimeout < 10)) {
 		FD_ZERO(&read_handle);
 		FD_SET(sockfd, &read_handle);
 
@@ -172,8 +177,10 @@ int omniksearch(char *Omnik_address, long *serialnr) {
 		retval = select(sockfd+1, &read_handle, NULL, NULL, &timeout_interval);
 		if (retval == -1)
 			printf("Select error\n");
-		else if (retval == 0)
+		else if (retval == 0) {
 			printf("timeout\n");
+			totaltimeout++; //avoid endless loop
+		}
 		else {
 			// got some message	
 			if (FD_ISSET(sockfd, &read_handle)) {
