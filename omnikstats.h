@@ -10,6 +10,7 @@ struct statistics {
 	char url[60];
 	char key[60];
 	char ID[10];
+	char IPnumber[20];
 	char filename[200];
 	int strings;
 	long serial_number;
@@ -29,8 +30,8 @@ struct statistics stats;
 
 extern float ctonr(char * src, int nrofbytes, int div);
 extern void *get_in_addr(struct sockaddr *sa);
-extern int omniksearch(char *Omnikaddress, long *serialnr);
-extern int omnikgetstats(char *Omnik_address, long serialnr, char *server_reply);
+extern int omniksearch(void);
+extern int omnikgetstats(char *server_reply);
 extern void omnikcsv(void);
 extern char *getdatetime(char *now, int datetime);
 extern int omnikpvoutput(void);

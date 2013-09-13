@@ -27,7 +27,7 @@
 
 #include "omnikstats.h"
 
-int omniksearch(char *Omnik_address, long *serialnr) {
+int omniksearch() {
 
 	int sockfd;
 	struct addrinfo hints, *servinfo, *p;
@@ -189,8 +189,8 @@ int omniksearch(char *Omnik_address, long *serialnr) {
 					perror("Error in recvfrom.\n");
 					break;
 				}
-				strcpy(Omnik_address, inet_ntop(their_address.ss_family, get_in_addr((struct sockaddr *)&their_address), s, sizeof s));
-				if (strcmp(Omnik_address, host) != 0) 
+				strcpy(stats.IPnumber, inet_ntop(their_address.ss_family, get_in_addr((struct sockaddr *)&their_address), s, sizeof s));
+				if (strcmp(stats.IPnumber, host) != 0) 
 					Omnikreply = 1;
 			}
 		}
@@ -198,8 +198,8 @@ int omniksearch(char *Omnik_address, long *serialnr) {
 	if (stats.verbose > 1)
 		printf("Omnik replied: %s\n", buffer);
 	close(sockfd);
-	if (strstr(buffer, Omnik_address) == NULL) { // Nop this is not from the Omnik
-		printf("Reply is not from the Omnik");
+	if (strstr(buffer, stats.IPnumber) == NULL) { // Nop this is not from the Omnik
+		printf("Reply is not from the Omnik\n");
 		return(1);
 	}
 
@@ -207,7 +207,7 @@ int omniksearch(char *Omnik_address, long *serialnr) {
 		printf("No serial number found!\n");
 		return(1);
 	}
-	*serialnr = atol(&serialnumber[1]);
+	stats.serial_number = atol(&serialnumber[1]);
 	return(0);
 }
 

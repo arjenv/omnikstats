@@ -1,4 +1,16 @@
+/*
+*	omnikreadconfig.c
+*
+*	Reads the config file and stores the data
+*
+*	V1.1 sept, 13 2013
+*	V1.1 Changes: Added optional IPnumber and Serial number
+*	Beach
+*
+*/
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <sys/socket.h>
@@ -47,6 +59,19 @@ int omnikreadconfig(void) {
 				if (stats.verbose==2) printf("ID: %s\n", stats.ID);
 			}
 		}
+		if (strstr(line, "ipnumber") != NULL) {
+			if (strlen(line) < 25) {
+				strcpy(stats.IPnumber, &line[8]);
+				if (stats.verbose==2) printf("IP: %s\n", stats.IPnumber);
+			}
+		}
+		if (strstr(line, "snumber") != NULL) {
+			if (strlen(line) < 25) {
+				stats.serial_number = atol(&line[7]);
+				if (stats.verbose==2) printf("SN: %li\n", stats.serial_number);
+			}
+		}
+
 	}
 	return(0);
 }

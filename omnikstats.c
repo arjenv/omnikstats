@@ -5,7 +5,8 @@
 ** downloads statistics from it
 ** 
 ** Author: Beach
-** V1.0 may,23 2013
+** V1.1 sept,13 2013
+** V1.1 Changed: Added optional IP & serialnumber to be read from omnik.conf file
 */
 
 #include <stdio.h>
@@ -29,14 +30,15 @@ static void usage(const char *name)
 
 int main(int argc, char *argv[])
 {
-	long serialnr;
-	char Omnik_address[NI_MAXHOST];
 	int i;
 	char server_reply[256];
 	int opt;
 
 	stats.verbose = 0;
 	stats.logcsv = 0;
+	*stats.IPnumber = 0;
+	stats.serial_number = 0;
+
         while ((opt = getopt(argc, argv, "vl")) != -1) {
                 switch (opt) {
                 case 'v':       //verbose`
@@ -63,14 +65,16 @@ int main(int argc, char *argv[])
 	}
 
 			
-	// Try and search for the Omnik
-	if ((i=omniksearch(Omnik_address, &serialnr)) !=0) {
-		printf("Error in UDP: %d\n", i);
-		exit(1);
+	// If not predefined try and search for the Omnik
+	if (!stats.IPnumber) {
+		if ((i=omniksearch()) !=0) {
+			printf("Error in UDP: %d\n", i);
+			exit(1);
+		}
 	}
 
 	// Get the  statistics
-	if ((i=omnikgetstats(Omnik_address, serialnr, server_reply)) != 0) {
+	if ((i=omnikgetstats(server_reply)) != 0) {
 		printf("Error in TCP: %d\n", i);
 		exit(1);
 	}
@@ -83,6 +87,7 @@ int main(int argc, char *argv[])
 
 	// send it to pvoutput.org
 	omnikpvoutput();
+
 
 	return 0;
 }

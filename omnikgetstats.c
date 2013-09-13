@@ -10,6 +10,7 @@
 ** 
 **	Author: Beach
 **	V1.0 may,23 2013
+**	V1.1 sept, 13 2013. Added optional IPP and Serial number in conf file
 */
 
 #include <stdio.h>
@@ -20,7 +21,7 @@
 #include "omnikstats.h"
 
 
-int omnikgetstats(char *Omnik_address, long serialnr, char *server_reply) {
+int omnikgetstats(char *server_reply) {
 
 	int checksum = 0;
 	int i;
@@ -36,7 +37,7 @@ int omnikgetstats(char *Omnik_address, long serialnr, char *server_reply) {
 
 	char magicmessage[] = {0x68, 0x02, 0x40, 0x30, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x16};
 	for (i=0; i<4; i++) {
-		magicmessage[4+i] = magicmessage[8+i] = ((serialnr>>(8*i))&0xff);
+		magicmessage[4+i] = magicmessage[8+i] = ((stats.serial_number>>(8*i))&0xff);
 		checksum += magicmessage[4+i];
 	}
 	checksum *= 2;
@@ -55,7 +56,7 @@ int omnikgetstats(char *Omnik_address, long serialnr, char *server_reply) {
 		return(1);
 	}
          
-	server.sin_addr.s_addr = inet_addr(Omnik_address);
+	server.sin_addr.s_addr = inet_addr(stats.IPnumber);
 	server.sin_family = AF_INET;
 	server.sin_port = htons(OMNIKPORT); //port 8899
  
