@@ -59,7 +59,7 @@ void *get_in_addr(struct sockaddr *sa)
 **	function yyyymmdd(int datetime);
 **
 **	Returns either the date (yyyymmdd) or the time(hh:mm)
-**	depending on datetime (0=date, 1=time)
+**	depending on datetime (0=date, 1=time, 2=year, 3=time+seconds)
 **
 */
 
@@ -79,6 +79,9 @@ char *getdatetime(char *now, int datetime) {
 		break;
 		case 2:
 			strftime(now, 10, "%Y", timeinfo);
+		break;
+		case 3:
+			strftime(now, 10, "%H:%M:%S", timeinfo);
 		break;
 		default:
 			strcpy(now, "no data");

@@ -54,9 +54,9 @@ void omnikcsv(void) {
 	}
 
 	pFile = fopen(filename, "a");
-	fprintf(pFile, "%s,%s,%.0f,%.1f,%.1f,%.1f,%.1f,%.1f,%.2f,%.2f,%.1f,%.0f,", 
+	fprintf(pFile, "%s,%s,%.0f,%.1f,%.1f,%.1f,%.1f,%.1f,%.2f,%.2f,%.1f,%.0f\n", 
 		getdatetime(date, 0),
-		getdatetime(now, 1),
+		getdatetime(now, 3),
 		stats.PowerToday,
 		stats.PVPower[0],
 		stats.temperature,
