@@ -7,6 +7,7 @@
 struct statistics {
 	int verbose;
 	int logcsv;
+	int skip_pvoutput;
 	char url[60];
 	char key[60];
 	char ID[10];

@@ -18,12 +18,13 @@
 
 static void usage(const char *name)
 {
-        fprintf(stderr, "Usage: %s [-v] [-l]\n\n"
+        fprintf(stderr, "Usage: %s [-v] [-l] [-s]\n\n"
                 "Where:\n"
         "\t-v be verbose\n"
         "\t-vv be more verbose\n"
         "\t-vvv Even more verbose\n"
         "\t-l Log statistics in a CSV file\n"
+        "\t-s Skip pushing to PVOutput\n"
         "\n", name);
         exit(1);
 }
@@ -38,14 +39,18 @@ int main(int argc, char *argv[])
 	stats.logcsv = 0;
 	*stats.IPnumber = 0;
 	stats.serial_number = 0;
+	stats.skip_pvoutput = 0;
 
-        while ((opt = getopt(argc, argv, "vl")) != -1) {
+        while ((opt = getopt(argc, argv, "vls")) != -1) {
                 switch (opt) {
                 case 'v':       //verbose`
                         stats.verbose += 1;
                         break;
                 case 'l':       // Log to CSV
                         stats.logcsv = 1;
+			break;
+                case 's':       // Skip pushing to PVOutput
+                        stats.skip_pvoutput = 1;
 			break;
                 case '?':
                         usage(argv[0]);
@@ -86,8 +91,7 @@ int main(int argc, char *argv[])
 	if (stats.logcsv) omnikcsv();
 
 	// send it to pvoutput.org
-	omnikpvoutput();
-
+	if (! stats.skip_pvoutput) omnikpvoutput();
 
 	return 0;
 }
