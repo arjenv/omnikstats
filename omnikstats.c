@@ -13,8 +13,11 @@
 #include <stdlib.h>
 #include <netdb.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "omnikstats.h"
+
+struct statistics stats;
 
 static void usage(const char *name)
 {
@@ -36,7 +39,7 @@ int main(int argc, char *argv[])
 
 	stats.verbose = 0;
 	stats.logcsv = 0;
-	*stats.IPnumber = 0;
+	strcpy(stats.IPnumber, "");
 	stats.serial_number = 0;
 
         while ((opt = getopt(argc, argv, "vl")) != -1) {
@@ -66,7 +69,7 @@ int main(int argc, char *argv[])
 
 			
 	// If not predefined try and search for the Omnik
-	if (!stats.IPnumber) {
+	if (stats.IPnumber[0] == '\0') {
 		if ((i=omniksearch()) !=0) {
 			printf("Error in UDP: %d\n", i);
 			exit(1);

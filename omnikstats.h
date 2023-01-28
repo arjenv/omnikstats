@@ -26,7 +26,7 @@ struct statistics {
 	float TotalHours;
 };
 
-struct statistics stats;
+extern struct statistics stats;
 
 extern float ctonr(char * src, int nrofbytes, int div);
 extern void *get_in_addr(struct sockaddr *sa);
